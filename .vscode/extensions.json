@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "Kingleo.qwen",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "eamodio.gitlens",
+    "EditorConfig.EditorConfig",
+    "alexcvzz.vscode-sqlite"
+  ]
+}

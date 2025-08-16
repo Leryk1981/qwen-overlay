@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+# commit-msg: validate Conventional Commits on the first line
+
+MSG_FILE="$1"
+FIRST_LINE=$(head -n 1 "$MSG_FILE")
+
+# Allowed types: feat, fix, docs, style, refactor, perf, test, chore, build, ci, revert
+PATTERN='^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert)(\([A-Za-z0-9_.-]+\))?!?: .{1,72}$'
+
+echo "$FIRST_LINE" | grep -Eq "$PATTERN"
+if [ $? -ne 0 ]; then
+  echo >&2 "[commit-msg] Invalid message:"
+  echo >&2 "  $FIRST_LINE"
+  echo >&2 ""
+  echo >&2 "Expected: type(scope)?: short summary (max 72 chars)"
+  echo >&2 "Types: feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert"
+  echo >&2 "Examples:"
+  echo >&2 "  feat(router): add rate limiter"
+  echo >&2 "  fix(api)!: return 400 on invalid payload"
+  echo >&2 "  chore: bump deps"
+  echo >&2 ""
+  echo >&2 "Tip: use --no-verify to bypass (not recommended)."
+  exit 1
+fi
+
+exit 0
