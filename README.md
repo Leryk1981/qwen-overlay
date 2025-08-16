@@ -30,3 +30,9 @@
 - `python .tools/ctx.py last --limit 20` / `python .tools/ctx.py snaps --limit 20`
 
 > `.env` у `.gitignore` — секрети не потраплять у репозиторій.
+
+## TL;DR після клонування
+```powershell
+git config core.hooksPath .githooks
+Copy-Item .env.example .env -Force
+```
