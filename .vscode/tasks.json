@@ -1,34 +1,141 @@
 {
   "version": "2.0.0",
   "tasks": [
-    { "label": "Qwen (OAuth)", "type": "shell", "command": "qwen", "problemMatcher": [] },
+    {
+      "label": "Qwen (OAuth)",
+      "type": "shell",
+      "command": "qwen",
+      "problemMatcher": []
+    },
     {
       "label": "Qwen: Flash (Model Studio)",
       "type": "shell",
       "command": "pwsh",
-      "args": ["-NoProfile","-ExecutionPolicy","Bypass","-File",".\\.scripts\\qwen-ms.ps1","-Model","qwen3-coder-flash"],
-      "options": { "cwd": "${workspaceFolder}" },
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".\\.scripts\\qwen-ms.ps1",
+        "-Model",
+        "qwen3-coder-flash"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": []
     },
     {
       "label": "Qwen: Plus (Model Studio)",
       "type": "shell",
       "command": "pwsh",
-      "args": ["-NoProfile","-ExecutionPolicy","Bypass","-File",".\\.scripts\\qwen-ms.ps1","-Model","qwen3-coder-plus"],
-      "options": { "cwd": "${workspaceFolder}" },
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".\\.scripts\\qwen-ms.ps1",
+        "-Model",
+        "qwen3-coder-plus"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": []
     },
     {
       "label": "Qwen: 7B (OPS/SQLite)",
       "type": "shell",
       "command": "pwsh",
-      "args": ["-NoProfile","-ExecutionPolicy","Bypass","-File",".\\.scripts\\qwen-ms.ps1","-Model","qwen2.5-coder-7b-instruct"],
-      "options": { "cwd": "${workspaceFolder}" },
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".\\.scripts\\qwen-ms.ps1",
+        "-Model",
+        "qwen2.5-coder-7b-instruct"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": []
     },
-
-    { "label": "Copy: CONDUCTOR prompt",   "type": "shell", "command": "pwsh", "args": ["-NoProfile","-Command","Get-Content 'prompts/CONDUCTOR.md' -Raw | Set-Clipboard"], "problemMatcher": [] },
-    { "label": "Copy: DEV_HEAVY_plus",     "type": "shell", "command": "pwsh", "args": ["-NoProfile","-Command","Get-Content 'prompts/DEV_HEAVY_plus.md' -Raw | Set-Clipboard"], "problemMatcher": [] },
-    { "label": "Copy: OPS_CTX_7b",         "type": "shell", "command": "pwsh", "args": ["-NoProfile","-Command","Get-Content 'prompts/OPS_CTX_7b.md' -Raw | Set-Clipboard"], "problemMatcher": [] }
+    {
+      "label": "Copy: CONDUCTOR prompt",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-Command",
+        "Get-Content 'prompts/CONDUCTOR.md' -Raw | Set-Clipboard"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Copy: DEV_HEAVY_plus",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-Command",
+        "Get-Content 'prompts/DEV_HEAVY_plus.md' -Raw | Set-Clipboard"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Copy: OPS_CTX_7b",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-Command",
+        "Get-Content 'prompts/OPS_CTX_7b.md' -Raw | Set-Clipboard"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "label": "OPS: Save clipboard note",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".\\\\.scripts\\\\ops-save-note.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "label": "OPS: Show last notes",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".\\\\.scripts\\\\ops-last.ps1",
+        "-Limit",
+        "10"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "label": "OPS: Show last snaps",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".\\\\.scripts\\\\ops-snaps.ps1",
+        "-Limit",
+        "10"
+      ],
+      "problemMatcher": []
+    }
   ]
 }
