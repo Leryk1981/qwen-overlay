@@ -51,16 +51,17 @@ def cmd_msg(args):
     )
     conn.commit(); print("OK: message saved")
 
-def git_diff():
+def git_diff(cached=False):
     try:
-        return subprocess.check_output(["git","diff"], stderr=subprocess.DEVNULL) \
+        cmd = ["git","diff","--cached"] if cached else ["git","diff"]
+        return subprocess.check_output(cmd, stderr=subprocess.DEVNULL) \
                          .decode("utf-8","ignore")
     except Exception:
         return ""
 
 def cmd_snapshot(args):
     conn = db(); ensure_schema(conn)
-    diff = git_diff()
+    diff = git_diff(getattr(args, "cached", False))
     sha = hashlib.sha1(diff.encode("utf-8")).hexdigest()
     summary = args.summary or "git diff"
     conn.execute(
@@ -122,6 +123,7 @@ if __name__=="__main__":
 
     p=sub.add_parser("snapshot")
     p.add_argument("--summary", default="")
+    p.add_argument("--cached", action="store_true")
     p.set_defaults(func=cmd_snapshot)
 
     p=sub.add_parser("last")

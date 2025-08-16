@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
-# pre-commit: зберегти git diff у SQLite через .tools/ctx.py
+# pre-commit: save STAGED git diff to SQLite via .tools/ctx.py
 
-# Визначаємо Python
+# Detect Python
 if [ -x "./.venv/Scripts/python.exe" ]; then
   PY="./.venv/Scripts/python.exe"
 elif [ -x "./.venv/bin/python" ]; then
@@ -10,9 +10,13 @@ else
   PY="python"
 fi
 
-# Запускаємо snapshot (тихо, але з коротким повідомленням)
-$PY ./.tools/ctx.py snapshot --summary "pre-commit" >/dev/null 2>&1 || {
-  echo "[pre-commit] WARN: ctx.py snapshot failed (продовжую коміт)"
-}
+# Skip snapshot if no STAGED changes
+if git diff --cached --quiet; then
+  exit 0
+fi
 
+# Save staged diff
+$PY ./.tools/ctx.py snapshot --summary "pre-commit" --cached >/dev/null 2>&1 || {
+  echo "[pre-commit] WARN: ctx.py snapshot failed (continuing commit)"
+}
 exit 0
