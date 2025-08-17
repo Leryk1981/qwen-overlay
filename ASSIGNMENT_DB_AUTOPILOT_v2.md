@@ -1,6 +1,4 @@
-
 # ASSIGNMENT — DB Autopilot (v2, self‑healing DB paths)
-
 
 > Мета: LLM **сама** в терміналі веде overlay‑БД (SQLite) і **ладнає збої з шляхами**: авто‑виявлення правильної БД, скан кандидатів, вибір/персист шляхів, міграції/ремонт, бекапи. Ти лише підтверджуєш запропоновані команди.
 
@@ -31,7 +29,7 @@
 - Якщо БД не існує — створити `state/` і перейти до ініціалізації/міграцій.
 
 ### 4) Ініціалізація/ремонт
-- `migrate:up` — застосувати мінімальні міграції overlay (`006_sql_ops_min_schema.sql`, `007_*`, `008_*`; опц. `009_seed_smoke.sql`) і за наявності `006_policy_store.sql`.
+- `migrate:up` — застосувати мінімальні міграції overlay. Перша міграція (`001_sql_ops_min_schema.sql` або подібна) **повинна** створити таблицю `schema_migrations`. Потім застосовуються інші міграції (`002_*`, `003_*`.
 - `repair` — якщо відсутні критичні таблиці/в’юхи → викликати `migrate:up` і повторно провалідати.
 - Усі мутації → бекап `state/sessions.<timestamp>.db` + снапшот.
 
@@ -178,7 +176,8 @@ if (!(Test-Path $envfile)) { New-Item -ItemType File $envfile | Out-Null }
 Add-Content $envfile ('MOVA_DB="' + $abs + '"')
 $env:DB = $abs
 python .tools\ctx.py snapshot --summary "db:fix -> $abs"
-# міграції
+# міграції - порядок важливий для правильного створення schema_migrations
+# Перша міграція (наприклад, 006_sql_ops_min_schema.sql) створює schema_migrations
 $DB = $abs
 $files = @("migrations\006_sql_ops_min_schema.sql","migrations\007_sql_ops_views.sql","migrations\008_sql_ops_fts.sql")
 foreach ($f in $files) { if (Test-Path $f) { python .tools\sqlm.py -d "$DB" -f $f } }
@@ -191,10 +190,12 @@ python .tools\sqlq.py -d "$DB" -q "SELECT name,type FROM sqlite_master ORDER BY 
 abs="<ABS_PATH>"
 grep -v '^MOVA_DB=' .env 2>/dev/null > .env.tmp || true
 mv .env.tmp .env 2>/dev/null || true
-echo "MOVA_DB="$abs"" >> .env
+echo 'MOVA_DB="$abs"' >> .env
 export DB="$abs"
 python .tools/ctx.py snapshot --summary "db:fix -> $abs"
 DB="$abs"
+# міграції - порядок важливий для правильного створення schema_migrations
+# Перша міграція (наприклад, 006_sql_ops_min_schema.sql) створює schema_migrations
 for f in migrations/006_sql_ops_min_schema.sql migrations/007_sql_ops_views.sql migrations/008_sql_ops_fts.sql; do
   [ -f "$f" ] && python .tools/sqlm.py -d "$DB" -f "$f"
 done
